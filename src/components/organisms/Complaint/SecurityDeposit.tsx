@@ -1,82 +1,77 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Text, Input, Button, Icon } from 'react-native-elements';
-import { StyleSheet, View, TextInput } from 'react-native';
-import Name from '../../molecules/Name';
-import Address from '../../molecules/Address';
+import { Text, CheckBox } from 'react-native-elements';
+import { View, TextInput } from 'react-native';
 import Date from '../../molecules/Date';
+import DelayedDamage from '../../molecules/DelayedDamage';
 import SecurityDepositTemplate from '../ContentsCertificatedMail/SecurityDeposit';
-
-const styles = StyleSheet.create({
-  descriptionAttention: {
-    marginTop: 40,
-    color: '#EB5757',
-    fontSize: 12,
-    height: 20,
-    marginLeft: 5,
-    padding: 3,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: '#EB5757',
-  },
-  labelAttention: {
-    marginTop: 30,
-    color: '#EB5757',
-    fontSize: 12,
-    height: 20,
-    marginLeft: 5,
-    padding: 3,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: '#EB5757',
-  },
-  any: {
-    marginTop: 30,
-    color: '#4682b4',
-    fontSize: 12,
-    height: 20,
-    marginLeft: 5,
-    padding: 3,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: '#4682b4',
-  },
-  description: {
-    fontSize: 20,
-    marginTop: 40,
-    marginLeft: 20,
-    fontWeight: 'bold',
-  },
-  numberInputWide: {
-    fontSize: 16,
-    width: 120,
-    backgroundColor: 'white',
-    height: 40,
-    marginRight: 10,
-    borderColor: 'gray',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderRadius: 5,
-  },
-  text: {
-    color: '#333333',
-    fontSize: 16,
-    marginTop: 12,
-  },
-  label: {
-    color: '#333333',
-    fontSize: 16,
-    marginLeft: 20,
-    marginBottom: 10,
-    marginTop: 30,
-  },
-});
+import { styles } from '../../../styles/form';
 
 const SecurityDeposit: FC = () => {
   return (
     <>
       <SecurityDepositTemplate />
+      <DelayedDamage />
+      <CheckBox title="仮執行の有無" />
+      <Text style={styles.label}>契約日</Text>
+      <Date />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>賃貸物件の所在</Text>
+        <Text style={styles.required}>必須</Text>
+      </View>
+      <TextInput
+        style={styles.textInputWide}
+        placeholder="◯◯県◯◯市◯◯町◯丁目◯番◯号"
+      />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>
+          賃貸物件の名称（アパート名等）及び棟室番号
+        </Text>
+        <Text style={styles.required}>必須</Text>
+      </View>
+      <TextInput
+        style={styles.textInputWide}
+        placeholder="◯◯アパート　203号室"
+      />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>賃借期間</Text>
+        <Text style={styles.optional}>任意</Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginLeft: 20 }}>
+        <TextInput
+          style={styles.numberInput}
+          maxLength={3}
+          keyboardType="numeric"
+        />
+        <Text style={styles.text}>年</Text>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>敷金返還についての約定</Text>
+        <Text style={styles.optional}>任意</Text>
+      </View>
+      <TextInput
+        style={styles.textInputWide}
+        placeholder="建物明渡しの1ヶ月後に返還する。"
+      />
+      <Text style={styles.label}>賃貸借契約終了日</Text>
+      <Date />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>参考情報</Text>
+        <Text style={styles.optional}>任意</Text>
+      </View>
+      <TextInput
+        style={styles.textarea}
+        placeholder="被告は、敷金をリフォーム費用に充当したので、返すべき敷金はないと言って支払おうとしない。"
+        multiline={true}
+      />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>添付書類</Text>
+        <Text style={styles.optional}>任意</Text>
+      </View>
+      <CheckBox title="賃貸借契約書" />
+      <CheckBox title="登記事項証明書（商業登記簿謄本）" />
+      <CheckBox title="内容証明郵便" />
+      <CheckBox title="配達証明書" />
+      <CheckBox title="敷金領収書" />
     </>
   );
 };

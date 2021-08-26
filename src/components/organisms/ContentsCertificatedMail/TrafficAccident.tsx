@@ -1,116 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Text, Input, Button, Icon } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
-import Name from '../../molecules/Name';
-import Address from '../../molecules/Address';
 import Date from '../../molecules/Date';
 import Time from '../../molecules/Time';
 import RNPickerSelect from 'react-native-picker-select';
-
-const styles = StyleSheet.create({
-  descriptionAttention: {
-    marginTop: 40,
-    color: '#EB5757',
-    fontSize: 12,
-    height: 20,
-    marginLeft: 5,
-    padding: 3,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: '#EB5757',
-  },
-  labelAttention: {
-    marginTop: 30,
-    color: '#EB5757',
-    fontSize: 12,
-    height: 20,
-    marginLeft: 5,
-    padding: 3,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: '#EB5757',
-  },
-  any: {
-    marginTop: 30,
-    color: '#4682b4',
-    fontSize: 12,
-    height: 20,
-    marginLeft: 5,
-    padding: 3,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: '#4682b4',
-  },
-  description: {
-    fontSize: 20,
-    marginTop: 40,
-    marginLeft: 20,
-    fontWeight: 'bold',
-  },
-  numberInputWide: {
-    fontSize: 16,
-    width: 120,
-    backgroundColor: 'white',
-    height: 40,
-    marginRight: 10,
-    borderColor: 'gray',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderRadius: 5,
-  },
-  text: {
-    color: '#333333',
-    fontSize: 16,
-    marginTop: 12,
-  },
-  label: {
-    color: '#333333',
-    fontSize: 16,
-    marginLeft: 20,
-    marginBottom: 10,
-    marginTop: 30,
-  },
-  add: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5e4e4',
-    marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 10,
-  },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    marginRight: 40,
-    height: 40,
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: '#789',
-    borderRadius: 4,
-    color: '#789',
-    paddingRight: 30, // to ensure the text is never behind the icon
-    width: 160,
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: '#789',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-    width: 160,
-    backgroundColor: '#eee',
-  },
-});
+import { styles, pickerSelectStyles } from '../../../styles/form';
 
 const trafficAccidentDamageType = [
   { label: '修理費', value: '0' },
@@ -125,16 +19,19 @@ const TrafficAccident: FC = () => {
 
   return (
     <>
+      <Text style={styles.description}>
+        交通事故に関する情報を入力しましょう
+      </Text>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.description}>
-          交通事故に関する情報を入力しましょう{' '}
-        </Text>
-        <Text style={styles.descriptionAttention}>必須</Text>
+        <Text style={styles.label}>交通事故発生日時</Text>
+        <Text style={styles.required}>必須</Text>
       </View>
-      <Text style={styles.label}>交通事故発生日時</Text>
       <Date />
       <Time />
-      <Text style={styles.label}>損害</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>損害</Text>
+        <Text style={styles.required}>必須</Text>
+      </View>
       {damageCount.map(() => (
         <View
           style={{ flexDirection: 'row', marginLeft: 20, marginBottom: 20 }}

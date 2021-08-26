@@ -23,5 +23,5 @@
   "include": [
     "src",
     "tsconfig.eslint.json",
-    "index.tsx"  ]
+    "index.tsx", "styles"  ]
 }
