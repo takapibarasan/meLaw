@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Complaint from './Complaint';
 import ContentsCertificatedMail from './ContentsCertificatedMail';
+import Injunction from './Injunction';
 
 type RootStackParamList = {
   Home: undefined;
@@ -33,6 +34,7 @@ const DocumentCreateScreen = ({ route, navigation }: Props) => {
         <></>
       )}
       {variable == '訴状' ? <Complaint type={constant} /> : <></>}
+      {variable == '仮処分命令申立書' ? <Injunction type={constant} /> : <></>}
     </>
   );
 };

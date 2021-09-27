@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { Text, Icon, ListItem } from 'react-native-elements';
 import { Menu } from '../../data/menus';
 import { StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   number: {
@@ -29,7 +30,7 @@ type Props = {
 const ButtonList: FC<Props> = ({ buttons, existsSubtitle, constant }) => {
   const navigation = useNavigation();
   return (
-    <>
+    <ScrollView>
       {buttons.map((item, i) => (
         <ListItem
           key={i}
@@ -67,7 +68,7 @@ const ButtonList: FC<Props> = ({ buttons, existsSubtitle, constant }) => {
           <ListItem.Chevron />
         </ListItem>
       ))}
-    </>
+    </ScrollView>
   );
 };
 

@@ -89,6 +89,15 @@ const PreRequestScreen: FC<Props> = ({ route }: Props) => {
   const { constant, variable } = route.params;
   return (
     <>
+      {variable == '誹謗中傷' ? (
+        <PreRequestTemplate
+          confirmData={snsConfirmData}
+          screen="慰謝料請求をしましょう"
+          variable={variable}
+        />
+      ) : (
+        <></>
+      )}
       {variable == '返金請求' ? (
         <PreRequestTemplate
           confirmData={informationConfirmData}
@@ -125,10 +134,10 @@ const PreRequestScreen: FC<Props> = ({ route }: Props) => {
       ) : (
         <></>
       )}
-      {variable == '賃金請求' ? (
+      {variable == '給料請求' ? (
         <PreRequestTemplate
           confirmData={salaryConfirmData}
-          screen="賃金請求をしましょう"
+          screen="給料請求をしましょう"
           variable={variable}
         />
       ) : (

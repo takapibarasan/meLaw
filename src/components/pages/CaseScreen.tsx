@@ -22,7 +22,9 @@ type Props = {
 };
 
 const CaseScreen: FC<Props> = () => {
-  return <ButtonList buttons={caseData} existsSubtitle={false} constant={''} />;
+  return (
+    <ButtonList buttons={caseData} existsSubtitle={false} constant={''} />
+  );
 };
 
 export default CaseScreen;

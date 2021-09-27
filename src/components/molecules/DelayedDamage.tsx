@@ -1,18 +1,33 @@
-import React, { FC, useState } from 'react';
-import { Text } from 'react-native-elements';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { FC } from 'react';
+import { CheckBox, Text } from 'react-native-elements';
+import { TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import Date from './Date';
-import { styles, pickerSelectStyles } from '../../styles/form';
+import { styles, pickerSelectStylesWide } from '../../styles/form';
+import DateTemplate from './Date';
 
-const delayedDamageStartDate = [
-  { label: '訴状送達の日の翌日', value: '訴状送達の日の翌日' },
-  { label: 'その他', value: 'その他' },
+const delayPaymentStartTypes = [
+  { label: '訴状送達の日の翌日', value: 1 },
+  { label: 'その他', value: 2 },
 ];
-const DelayedDamage: FC = () => {
-  const [expanded, setExpanded] = React.useState(false);
+type Props = {
+  existsDelayPayment: boolean;
+  delayPayment: string;
+  delayPaymentStartType: number;
+  delayPaymentStartDate: Date;
+};
+const DelayPayment: FC<Props> = ({
+  existsDelayPayment,
+  delayPayment,
+  delayPaymentStartType,
+  delayPaymentStartDate,
+}) => {
   return (
     <>
+      <CheckBox
+        checked={existsDelayPayment}
+        title="遅延損害金の請求有無"
+        onPress={() => (existsDelayPayment = !existsDelayPayment)}
+      />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>遅延損害利率</Text>
         <Text style={styles.optional}>任意</Text>
@@ -23,6 +38,8 @@ const DelayedDamage: FC = () => {
           style={styles.numberInput}
           maxLength={3}
           keyboardType="numeric"
+          value={delayPayment}
+          onChangeText={(value) => (delayPayment = value)}
         />
         <Text style={styles.text}>%</Text>
       </View>
@@ -31,18 +48,16 @@ const DelayedDamage: FC = () => {
         <Text style={styles.optional}>任意</Text>
       </View>
       <RNPickerSelect
-        onValueChange={(value) => {
-          if (value == 'その他') setExpanded(true);
-          else setExpanded(false);
-        }}
-        items={delayedDamageStartDate}
-        style={pickerSelectStyles}
+        onValueChange={(value) => (delayPaymentStartType = value)}
+        items={delayPaymentStartTypes}
+        style={pickerSelectStylesWide}
+        value={delayPaymentStartType}
       />
-      <View style={expanded ? { display: 'flex' } : { display: 'none' }}>
-        <Date />
-      </View>
+      {delayPaymentStartType === 2 ? (
+        <DateTemplate date={delayPaymentStartDate} />
+      ) : null}
     </>
   );
 };
 
-export default DelayedDamage;
+export default DelayPayment;

@@ -1,25 +1,16 @@
 import React, { FC, useState } from 'react';
 import { Text } from 'react-native-elements';
 import { View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { hours, minutes } from '../../data/forms';
-import { styles, pickerSelectStyles } from '../../styles/form';
+import { styles, pickerSelectStylesNarrow } from '../../styles/form';
+import { TextInput } from 'react-native-gesture-handler';
 
 const Time: FC = () => {
   return (
-    <View style={{ flexDirection: 'row', marginLeft: 20, marginTop: 20 }}>
-      <RNPickerSelect
-        onValueChange={(value) => {}}
-        items={hours}
-        style={pickerSelectStyles}
-      />
-      <Text style={styles.label}>時</Text>
-      <RNPickerSelect
-        onValueChange={(value) => {}}
-        items={minutes}
-        style={pickerSelectStyles}
-      />
-      <Text style={styles.label}>分</Text>
+    <View style={{ flexDirection: 'row', marginTop: 20 }}>
+      <TextInput style={styles.textInputNarrow} />
+      <Text style={styles.inputLabel}>時</Text>
+      <TextInput style={styles.textInputNarrow} />
+      <Text style={styles.inputLabel}>分頃</Text>
     </View>
   );
 };

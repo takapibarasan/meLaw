@@ -1,42 +1,23 @@
 import React, { FC, useState } from 'react';
 import { Text } from 'react-native-elements';
 import { View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { years, months } from '../../data/forms';
-import { styles, pickerSelectStyles } from '../../styles/form';
+import { styles } from '../../styles/form';
+import DateTemplate from './Date';
 
-const Duration: FC = () => {
+type Props = {
+  startDate: Date;
+  endDate: Date;
+};
+const Duration: FC<Props> = ({ startDate, endDate }) => {
   return (
     <>
       <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-        <RNPickerSelect
-          onValueChange={(value) => {}}
-          items={years}
-          style={pickerSelectStyles}
-        />
-        <Text style={styles.label}>年</Text>
-        <RNPickerSelect
-          onValueChange={(value) => {}}
-          items={months}
-          style={pickerSelectStyles}
-        />
-        <Text style={styles.label}>月</Text>
-        <Text style={styles.label}>から</Text>
+        <DateTemplate date={startDate} />
+        <Text style={styles.inputLabel}>から</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <RNPickerSelect
-          onValueChange={(value) => {}}
-          items={years}
-          style={pickerSelectStyles}
-        />
-        <Text style={styles.label}>年</Text>
-        <RNPickerSelect
-          onValueChange={(value) => {}}
-          items={months}
-          style={pickerSelectStyles}
-        />
-        <Text style={styles.label}>月</Text>
-        <Text style={styles.label}>まで</Text>
+        <DateTemplate date={endDate} />
+        <Text style={styles.inputLabel}>まで</Text>
       </View>
     </>
   );

@@ -1,30 +1,20 @@
 import React, { FC, useState } from 'react';
-import { Text } from 'react-native-elements';
-import { TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import { styles } from '../../styles/form';
 
-const PhoneNumber: FC = () => {
+type Props = {
+  phoneNumber: string;
+};
+const PhoneNumber: FC<Props> = ({ phoneNumber }) => {
   return (
     <>
-      <View style={{ flexDirection: 'row', marginLeft: 20 }}>
-        <TextInput
-          style={styles.textInput}
-          maxLength={3}
-          keyboardType="numeric"
-        />
-        <Text style={styles.text}>-</Text>
-        <TextInput
-          style={styles.textInput}
-          maxLength={4}
-          keyboardType="numeric"
-        />
-        <Text style={styles.text}>-</Text>
-        <TextInput
-          style={styles.textInput}
-          maxLength={4}
-          keyboardType="numeric"
-        />
-      </View>
+      <TextInput
+        style={styles.numberInputWide}
+        maxLength={11}
+        keyboardType="numeric"
+        value={phoneNumber}
+        onChangeText={(value) => (phoneNumber = value)}
+      />
     </>
   );
 };
