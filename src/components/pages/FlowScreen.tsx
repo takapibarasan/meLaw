@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
   Home: undefined;
-  Profile: { type: string };
+  Profile: { type: string; caseId: string };
   Feed: { sort: 'latest' | 'top' } | undefined;
 };
 
@@ -23,12 +23,13 @@ type Props = {
 };
 
 const FlowScreen: FC<Props> = ({ route, navigation }: Props) => {
-  const { type } = route.params;
-  console.log(type);
+  let { type, caseId } = route.params;
+  if (caseId === undefined) caseId = Math.random().toString(36).slice(-8);
+
   return type == '誹謗中傷' ? (
-    <ButtonList buttons={snsFlowData} existsSubtitle={true} constant={type} />
+    <ButtonList buttons={snsFlowData} constant={type} id={caseId} />
   ) : (
-    <ButtonList buttons={flowData} existsSubtitle={true} constant={type} />
+    <ButtonList buttons={flowData} constant={type} id={caseId} />
   );
 };
 

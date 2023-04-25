@@ -1,0 +1,50 @@
+{
+  "identifier" : "2CA119E5",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_locale" : "ja",
+    "_storefront" : "JPN"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "4F03C63C",
+      "localizations" : [
+
+      ],
+      "name" : "スタンダードプラン",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "displayPrice" : "1800",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "A83EDFBF",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "org.reactjs.native.example.purin.autoSubscription.plan1",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "月額プラン",
+          "subscriptionGroupID" : "4F03C63C",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}

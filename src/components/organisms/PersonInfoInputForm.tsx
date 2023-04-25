@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Text } from 'react-native-elements';
 import { View, TextInput } from 'react-native';
 import Name from '../molecules/Name';
 import Address from '../molecules/Address';
 import RNPickerSelect from 'react-native-picker-select';
-import { styles, pickerSelectStylesWide } from '../../styles/form';
+import { styles, pickerSelectStyles } from '../../styles/form';
 
 type Props = {
   name: string;
@@ -15,6 +15,15 @@ type Props = {
   company: string;
   position: string;
   businessType: number;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setPostCode: React.Dispatch<React.SetStateAction<string>>;
+  setPrefecture: React.Dispatch<React.SetStateAction<string>>;
+  setCity: React.Dispatch<React.SetStateAction<string>>;
+  setBuilding: React.Dispatch<React.SetStateAction<string>>;
+  setCompany: React.Dispatch<React.SetStateAction<string>>;
+  setPosition: React.Dispatch<React.SetStateAction<string>>;
+  setBusinessType: React.Dispatch<React.SetStateAction<number>>;
+  required: boolean;
 };
 
 const businessTypes = [
@@ -30,62 +39,96 @@ const PersonInfoInputForm: FC<Props> = ({
   company,
   position,
   businessType,
+  setName,
+  setPostCode,
+  setPrefecture,
+  setCity,
+  setBuilding,
+  setCompany,
+  setPosition,
+  setBusinessType,
+  required,
 }) => {
   return (
     <>
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>事業種別</Text>
-        <Text style={styles.required}>必須</Text>
+        {required ? (
+          <Text style={styles.required}>必須</Text>
+        ) : (
+          <Text style={styles.optional}>任意</Text>
+        )}
       </View>
       <RNPickerSelect
-        onValueChange={(value) => (businessType = value)}
+        onValueChange={(value) => setBusinessType(value)}
         items={businessTypes}
-        style={pickerSelectStylesWide}
+        style={pickerSelectStyles}
+        value={businessType}
       />
       {businessType === 2 ? (
         <>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.label}>会社名</Text>
-            <Text style={styles.required}>必須</Text>
+            {required ? (
+              <Text style={styles.required}>必須</Text>
+            ) : (
+              <Text style={styles.optional}>任意</Text>
+            )}
           </View>
           <TextInput
             style={styles.textInputWide}
+            onChangeText={(value) => setCompany(value)}
             value={company}
-            onChangeText={(value) => (company = value)}
           />
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.label}>代表者名</Text>
-            <Text style={styles.required}>必須</Text>
+            {required ? (
+              <Text style={styles.required}>必須</Text>
+            ) : (
+              <Text style={styles.optional}>任意</Text>
+            )}
           </View>
-          <Name name={name} />
+          <Name name={name} setName={setName} />
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.label}>役職名</Text>
             <Text style={styles.optional}>任意</Text>
           </View>
           <TextInput
             style={styles.textInputWide}
+            onChangeText={(value) => setPosition(value)}
             value={position}
-            onChangeText={(value) => (position = value)}
           />
         </>
       ) : (
         <>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.label}>氏名</Text>
-            <Text style={styles.required}>必須</Text>
+            {required ? (
+              <Text style={styles.required}>必須</Text>
+            ) : (
+              <Text style={styles.optional}>任意</Text>
+            )}
           </View>
-          <Name name={name} />
+          <Name name={name} setName={setName} />
         </>
       )}
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>住所</Text>
-        <Text style={styles.required}>必須</Text>
+        {required ? (
+          <Text style={styles.required}>必須</Text>
+        ) : (
+          <Text style={styles.optional}>任意</Text>
+        )}
       </View>
       <Address
         postCode={postCode}
         prefecture={prefecture}
         city={city}
         building={building}
+        setPostCode={setPostCode}
+        setPrefecture={setPrefecture}
+        setCity={setCity}
+        setBuilding={setBuilding}
       />
     </>
   );

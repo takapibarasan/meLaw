@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Text } from 'react-native-elements';
 import { View, TextInput } from 'react-native';
 import { styles, pickerSelectStylesWide } from '../../../styles/form';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTemplate from '../../molecules/Date';
-import { ContentsCertifiedMailInformation } from '../../../models/contents-certified-mail';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const coolingOffTypes = [
   {
@@ -15,41 +16,46 @@ const coolingOffTypes = [
 ];
 
 type Props = {
-  model: ContentsCertifiedMailInformation;
+  service: string;
+  salesDate: firebase.firestore.Timestamp | null;
+  salesAmount: string;
+  coolingOffType: number;
+  setService: React.Dispatch<React.SetStateAction<string>>;
+  setSalesDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
+  setSalesAmount: React.Dispatch<React.SetStateAction<string>>;
+  setCoolingOffType: React.Dispatch<React.SetStateAction<number>>;
 };
-const Information: FC<Props> = ({ model }) => {
+const Information: FC<Props> = ({
+  service,
+  salesDate,
+  salesAmount,
+  coolingOffType,
+  setService,
+  setSalesDate,
+  setSalesAmount,
+  setCoolingOffType,
+}) => {
   return (
     <>
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.label}>会社名</Text>
-        <Text style={styles.optional}>任意</Text>
-      </View>
-      <TextInput
-        style={styles.textInputWide}
-        value={model.informationCompany}
-        onChangeText={(value) => {
-          model.informationCompany = value;
-        }}
-      />
       <Text style={styles.description}>
         契約条件に関する情報を入力しましょう
       </Text>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.label}>サービス名</Text>
+        <Text style={styles.label}>購入した商品名</Text>
         <Text style={styles.required}>必須</Text>
       </View>
       <TextInput
         style={styles.textInputWide}
-        value={model.service}
-        onChangeText={(value) => {
-          model.service = value;
-        }}
+        onChangeText={(value) => setService(value)}
+        value={service}
       />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>購入日</Text>
         <Text style={styles.required}>必須</Text>
       </View>
-      <DateTemplate date={model.salesDate} />
+      <DateTemplate date={salesDate} setDate={setSalesDate} />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>購入金額</Text>
         <Text style={styles.required}>必須</Text>
@@ -58,10 +64,8 @@ const Information: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.salesAmount}
-          onChangeText={(value) => {
-            model.salesAmount = value;
-          }}
+          onChangeText={(value) => setSalesAmount(value)}
+          value={salesAmount}
         />
         <Text style={styles.text}>円</Text>
       </View>
@@ -70,12 +74,10 @@ const Information: FC<Props> = ({ model }) => {
         <Text style={styles.required}>必須</Text>
       </View>
       <RNPickerSelect
-        onValueChange={(value) => {
-          model.coolingOffType = value;
-        }}
+        onValueChange={(value) => setCoolingOffType(value)}
         items={coolingOffTypes}
         style={pickerSelectStylesWide}
-        value={model.coolingOffType}
+        value={coolingOffType}
       />
     </>
   );

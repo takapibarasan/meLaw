@@ -3,22 +3,31 @@ import { Text } from 'react-native-elements';
 import { View } from 'react-native';
 import { styles } from '../../styles/form';
 import DateTemplate from './Date';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 type Props = {
-  startDate: Date;
-  endDate: Date;
+  startDate: firebase.firestore.Timestamp | null;
+  endDate: firebase.firestore.Timestamp | null;
+  setStartDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
+  setEndDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
 };
-const Duration: FC<Props> = ({ startDate, endDate }) => {
+const Duration: FC<Props> = ({
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+}) => {
   return (
     <>
-      <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-        <DateTemplate date={startDate} />
-        <Text style={styles.inputLabel}>から</Text>
+      <View style={{ marginBottom: 20 }}>
+        <DateTemplate date={startDate} setDate={setStartDate} start={true} />
       </View>
-      <View style={{ flexDirection: 'row' }}>
-        <DateTemplate date={endDate} />
-        <Text style={styles.inputLabel}>まで</Text>
-      </View>
+      <DateTemplate date={endDate} setDate={setEndDate} end={true} />
     </>
   );
 };

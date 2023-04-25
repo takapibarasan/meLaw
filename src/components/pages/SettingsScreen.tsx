@@ -7,8 +7,8 @@ import AccordionListItem from '../organisms/AccordionListItem';
 const SettingsScreen: FC = () => {
   return (
     <ScrollView>
-      {faqData.map((item) => (
-        <AccordionListItem data={item} />
+      {faqData.map((item, i) => (
+        <AccordionListItem data={item} key={i} />
       ))}
     </ScrollView>
   );

@@ -1,7 +1,11 @@
+import ContentsCertificatedMail from 'components/pages/ContentsCertificatedMail';
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 export type ContentsCertifiedMailCommon = {
-  id?: string;
+  caseId: string;
+  type: number;
+  user: string | undefined;
   name: string; // 共通
   postCode: string; // 共通
   prefecture: string; // 共通
@@ -28,26 +32,39 @@ export type ContentsCertifiedMailCommon = {
   updatedAt: firebase.firestore.Timestamp | null;
 };
 
+export type ContentsCertifiedMailSNS = {
+  oppositeAccountName: string;
+  slanderStartYear: string;
+  slanderStartMonth: string;
+  slanderEndYear: string;
+  slanderEndMonth: string;
+  postedDate: firebase.firestore.Timestamp | null;
+  post: string;
+  postedDate2: firebase.firestore.Timestamp | null;
+  post2: string;
+  isPointedFact: boolean;
+  damageAmount: string;
+};
+
 export type ContentsCertifiedMailInformation = {
-  salesDate: Date; // 情報商材、売買代金請求
+  salesDate: firebase.firestore.Timestamp | null; // 情報商材、売買代金請求
   salesAmount: string; // 情報商材、売買代金請求
-  informationCompany: string; // 情報商材
   service: string; // 情報商材
   coolingOffType: number; // 情報商材
 };
 
 export type ContentsCertifiedMailSalary = {
-  workStartDate: Date; // 未払いの給料請求
-  unpaidSalaryStartDate: Date; // 未払いの給料請求
-  unpaidSalaryEndDate: Date; // 未払いの給料請求
+  workStartDate: firebase.firestore.Timestamp | null; // 未払いの給料請求
+  unpaidSalaryStartDate: firebase.firestore.Timestamp | null; // 未払いの給料請求
+  unpaidSalaryEndDate: firebase.firestore.Timestamp | null; // 未払いの給料請求
   unpaidSalary: string; // 未払いの給料請求
 };
 
 export type ContentsCertifiedMailTradingValue = {
-  salesDate: Date; // 情報商材、売買代金請求
+  salesDate: firebase.firestore.Timestamp | null; // 情報商材、売買代金請求
   salesAmount: string; // 情報商材、売買代金請求
   product: string; // 売買代金請求
-  paymentDueDate: Date; // 売買代金請求
+  paymentDueDate: firebase.firestore.Timestamp | null; // 売買代金請求
   paidAmount: string; // 売買代金請求
 };
 
@@ -58,12 +75,14 @@ export type ContentsCertifiedMailSecurityDeposit = {
   rentBuilding: string; // 敷金返還請求
   rent: string; // 敷金返還請求
   expenses: string; // 敷金返還請求
-  leavingDate: Date; // 敷金返還請求
+  leavingDate: firebase.firestore.Timestamp | null; // 敷金返還請求
   depositAmount: string; // 敷金返還請求
 };
 
 export type ContentsCertifiedMailTrafficAccident = {
-  accidentDate: Date; // 損害賠償(交通事故による物損)請求
+  accidentDate: firebase.firestore.Timestamp | null; // 損害賠償(交通事故による物損)請求
+  accidentHour: string;
+  accidentMinute: string;
   accidentLocation: string; // 損害賠償(交通事故による物損)請求
   vehicleType: string; // 損害賠償(交通事故による物損)請求
   oppositeVehicleType: string; // 損害賠償(交通事故による物損)請求
@@ -78,9 +97,9 @@ export type ContentsCertifiedMailTrafficAccident = {
 
 export type ContentsCertifiedMailLendMoney = {
   loanAmount: string; // 貸金返還請求
-  loanDate: Date; // 貸金返還請求
+  loanDate: firebase.firestore.Timestamp | null; // 貸金返還請求
   existsReturnDate: boolean; // 貸金返還請求
-  returnDate: Date; // 貸金返還請求
+  returnDate: firebase.firestore.Timestamp | null; // 貸金返還請求
   interest: string; // 貸金返還請求
   returnAmount: string; // 貸金返還請求
   existsDelayPayment: boolean; // 貸金返還請求
@@ -88,6 +107,9 @@ export type ContentsCertifiedMailLendMoney = {
 };
 
 export const blankContentsCertifiedMailCommon: ContentsCertifiedMailCommon = {
+  caseId: '',
+  type: 1,
+  user: '',
   name: '',
   postCode: '',
   prefecture: '',
@@ -114,28 +136,41 @@ export const blankContentsCertifiedMailCommon: ContentsCertifiedMailCommon = {
   updatedAt: null,
 };
 
+export const blankContentsCertifiedMailSNS: ContentsCertifiedMailSNS = {
+  oppositeAccountName: '',
+  slanderStartYear: '',
+  slanderStartMonth: '',
+  slanderEndYear: '',
+  slanderEndMonth: '',
+  postedDate: null,
+  post: '',
+  postedDate2: null,
+  post2: '',
+  isPointedFact: false,
+  damageAmount: '',
+};
+
 export const blankContentsCertifiedMailInformation: ContentsCertifiedMailInformation =
   {
-    salesDate: new Date(),
+    salesDate: null,
     salesAmount: '',
-    informationCompany: '',
     service: '',
     coolingOffType: 1,
   };
 
 export const blankContentsCertifiedMailSalary: ContentsCertifiedMailSalary = {
-  workStartDate: new Date(),
-  unpaidSalaryStartDate: new Date(),
-  unpaidSalaryEndDate: new Date(),
+  workStartDate: null,
+  unpaidSalaryStartDate: null,
+  unpaidSalaryEndDate: null,
   unpaidSalary: '',
 };
 
 export const blankContentsCertifiedMailTradingValue: ContentsCertifiedMailTradingValue =
   {
-    salesDate: new Date(),
+    salesDate: null,
     salesAmount: '',
     product: '',
-    paymentDueDate: new Date(),
+    paymentDueDate: null,
     paidAmount: '',
   };
 
@@ -147,13 +182,15 @@ export const blankContentsCertifiedMailSecurityDeposit: ContentsCertifiedMailSec
     rentBuilding: '',
     rent: '',
     expenses: '',
-    leavingDate: new Date(),
+    leavingDate: null,
     depositAmount: '',
   };
 
 export const blankContentsCertifiedMailTrafficAccident: ContentsCertifiedMailTrafficAccident =
   {
-    accidentDate: new Date(),
+    accidentDate: null,
+    accidentHour: '',
+    accidentMinute: '',
     accidentLocation: '',
     vehicleType: '',
     oppositeVehicleType: '',
@@ -169,9 +206,9 @@ export const blankContentsCertifiedMailTrafficAccident: ContentsCertifiedMailTra
 export const blankContentsCertifiedMailLendMoney: ContentsCertifiedMailLendMoney =
   {
     loanAmount: '',
-    loanDate: new Date(),
+    loanDate: null,
     existsReturnDate: false,
-    returnDate: new Date(),
+    returnDate: null,
     interest: '',
     returnAmount: '',
     existsDelayPayment: false,

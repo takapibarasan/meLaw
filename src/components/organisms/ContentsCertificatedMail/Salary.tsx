@@ -1,15 +1,38 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Text } from 'react-native-elements';
 import { View, TextInput } from 'react-native';
 import Duration from '../../molecules/Duration';
 import { styles } from '../../../styles/form';
 import DateTemplate from '../../molecules/Date';
-import { ContentsCertifiedMailSalary } from '../../../models/contents-certified-mail';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 type Props = {
-  model: ContentsCertifiedMailSalary;
+  workStartDate: firebase.firestore.Timestamp | null;
+  unpaidSalaryStartDate: firebase.firestore.Timestamp | null;
+  unpaidSalaryEndDate: firebase.firestore.Timestamp | null;
+  unpaidSalary: string;
+  setWorkStartDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
+  setUnpaidSalaryStartDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
+  setUnpaidSalaryEndDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
+  setUnpaidSalary: React.Dispatch<React.SetStateAction<string>>;
 };
-const Salary: FC<Props> = ({ model }) => {
+const Salary: FC<Props> = ({
+  workStartDate,
+  unpaidSalaryStartDate,
+  unpaidSalaryEndDate,
+  unpaidSalary,
+  setWorkStartDate,
+  setUnpaidSalaryStartDate,
+  setUnpaidSalaryEndDate,
+  setUnpaidSalary,
+}) => {
   return (
     <>
       <Text style={styles.description}>
@@ -19,14 +42,16 @@ const Salary: FC<Props> = ({ model }) => {
         <Text style={styles.label}>勤務開始日</Text>
         <Text style={styles.required}>必須</Text>
       </View>
-      <DateTemplate date={model.workStartDate} />
+      <DateTemplate date={workStartDate} setDate={setWorkStartDate} />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>給料未払期間</Text>
         <Text style={styles.required}>必須</Text>
       </View>
       <Duration
-        startDate={model.unpaidSalaryStartDate}
-        endDate={model.unpaidSalaryEndDate}
+        startDate={unpaidSalaryStartDate}
+        endDate={unpaidSalaryEndDate}
+        setStartDate={setUnpaidSalaryStartDate}
+        setEndDate={setUnpaidSalaryEndDate}
       />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>給料未払総額</Text>
@@ -36,10 +61,8 @@ const Salary: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.unpaidSalary}
-          onChangeText={(value) => {
-            model.unpaidSalary = value;
-          }}
+          onChangeText={(value) => setUnpaidSalary(value)}
+          value={unpaidSalary}
         />
         <Text style={styles.text}>円</Text>
       </View>

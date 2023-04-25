@@ -1,5 +1,8 @@
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import {
   ContentsCertifiedMailCommon,
+  ContentsCertifiedMailSNS,
   ContentsCertifiedMailInformation,
   ContentsCertifiedMailSalary,
   ContentsCertifiedMailTradingValue,
@@ -7,6 +10,7 @@ import {
   ContentsCertifiedMailTrafficAccident,
   ContentsCertifiedMailLendMoney,
   blankContentsCertifiedMailCommon,
+  blankContentsCertifiedMailSNS,
   blankContentsCertifiedMailInformation,
   blankContentsCertifiedMailSalary,
   blankContentsCertifiedMailTradingValue,
@@ -16,7 +20,8 @@ import {
 } from './contents-certified-mail';
 
 export type ComplaintCommon = ContentsCertifiedMailCommon & {
-  lawsuitCount: number;
+  lawsuitCount: string;
+  courtName: string;
   phoneNumber: string;
   mailingType: number;
   mailingDescription: string;
@@ -40,15 +45,33 @@ export type ComplaintCommon = ContentsCertifiedMailCommon & {
   opposite2PhoneNumber: string;
 };
 
-export type ComplaintInformation = ContentsCertifiedMailInformation & {
+export type ComplaintSNS = ContentsCertifiedMailSNS & {
   execute: boolean;
-  interest: string;
-  interestStartDate: Date;
-  interestEndDate: Date;
   existsDelayPayment: boolean;
   delayPayment: string;
   delayPaymentStartType: number;
-  delayPaymentStartDate: Date;
+  delayPaymentStartDate: firebase.firestore.Timestamp | null;
+  existsEvidence: boolean;
+  existsDisclosureDocument: boolean;
+  existsProviderDocument: boolean;
+  providerName: string;
+  accountName: string;
+  isTargetAccount: boolean;
+  existsPosts: boolean;
+};
+
+export type ComplaintInformation = ContentsCertifiedMailInformation & {
+  execute: boolean;
+  existsDelayPayment: boolean;
+  delayPayment: string;
+  delayPaymentStartType: number;
+  delayPaymentStartDate: firebase.firestore.Timestamp | null;
+  contentsCertificatedMailDate: firebase.firestore.Timestamp | null;
+  existsContract: boolean;
+  existsReceipt: boolean;
+  existsEmail: boolean;
+  existsTranscriptCopy: boolean;
+  existsScreenShot: boolean;
 };
 
 export type ComplaintSalary = ContentsCertifiedMailSalary & {
@@ -60,14 +83,14 @@ export type ComplaintSalary = ContentsCertifiedMailSalary & {
   paymentDueDay: string;
   closingMonth: string;
   closingDay: string;
-  workEndDate: Date;
+  workEndDate: firebase.firestore.Timestamp | null;
   reference: string;
   existsStatement: boolean;
   existsCertificate: boolean;
   existsDelayPayment: boolean;
   delayPayment: string;
   delayPaymentStartType: number;
-  delayPaymentStartDate: Date;
+  delayPaymentStartDate: firebase.firestore.Timestamp | null;
 };
 
 export type ComplaintTradingValue = ContentsCertifiedMailTradingValue & {
@@ -77,7 +100,7 @@ export type ComplaintTradingValue = ContentsCertifiedMailTradingValue & {
   existsDelayPayment: boolean;
   delayPayment: string;
   delayPaymentStartType: number;
-  delayPaymentStartDate: Date;
+  delayPaymentStartDate: firebase.firestore.Timestamp | null;
   business: string;
   reference: string;
   existsContract: boolean;
@@ -89,9 +112,9 @@ export type ComplaintSecurityDeposit = ContentsCertifiedMailSecurityDeposit & {
   execute: boolean;
   existsContract: boolean;
   existsReceipt: boolean;
-  contractDate: Date;
+  contractDate: firebase.firestore.Timestamp | null;
   leasePeriod: string;
-  contractEndDate: Date;
+  contractEndDate: firebase.firestore.Timestamp | null;
   agreement: string;
   reference: string;
   existsCertificate: boolean;
@@ -100,7 +123,7 @@ export type ComplaintSecurityDeposit = ContentsCertifiedMailSecurityDeposit & {
   existsDelayPayment: boolean;
   delayPayment: string;
   delayPaymentStartType: number;
-  delayPaymentStartDate: Date;
+  delayPaymentStartDate: firebase.firestore.Timestamp | null;
 };
 
 export type ComplaintTrafficAccident = ContentsCertifiedMailTrafficAccident & {
@@ -118,25 +141,27 @@ export type ComplaintTrafficAccident = ContentsCertifiedMailTrafficAccident & {
   existsDelayPayment: boolean;
   delayPayment: string;
   delayPaymentStartType: number;
-  delayPaymentStartDate: Date;
+  delayPaymentStartDate: firebase.firestore.Timestamp | null;
 };
 
 export type ComplaintLendMoney = ContentsCertifiedMailLendMoney & {
   execute: boolean;
   interest: string;
-  interestStartDate: Date;
-  interestEndDate: Date;
+  interestStartDate: firebase.firestore.Timestamp | null;
+  interestEndDate: firebase.firestore.Timestamp | null;
   agreement: string;
   reference: string;
   existsContract: boolean;
   existsCertificate: boolean;
   existsAcknowledgement: boolean;
   existsMemorandum: boolean;
+  partialReturnDate: firebase.firestore.Timestamp | null;
 };
 
 export const blankComplaintCommon: ComplaintCommon = {
   ...blankContentsCertifiedMailCommon,
-  lawsuitCount: 1,
+  lawsuitCount: '1',
+  courtName: '',
   phoneNumber: '',
   mailingType: 1,
   mailingDescription: '',
@@ -160,16 +185,35 @@ export const blankComplaintCommon: ComplaintCommon = {
   opposite2PhoneNumber: '',
 };
 
-export const blankComplaintInformation: ComplaintInformation = {
-  ...blankContentsCertifiedMailInformation,
+export const blankComplaintSNS: ComplaintSNS = {
+  ...blankContentsCertifiedMailSNS,
   execute: false,
-  interest: '',
-  interestStartDate: new Date(),
-  interestEndDate: new Date(),
   existsDelayPayment: false,
   delayPayment: '',
   delayPaymentStartType: 1,
-  delayPaymentStartDate: new Date(),
+  delayPaymentStartDate: null,
+  existsEvidence: false,
+  existsDisclosureDocument: false,
+  existsProviderDocument: false,
+  providerName: '',
+  accountName: '',
+  isTargetAccount: false,
+  existsPosts: false,
+};
+
+export const blankComplaintInformation: ComplaintInformation = {
+  ...blankContentsCertifiedMailInformation,
+  execute: false,
+  existsDelayPayment: false,
+  delayPayment: '',
+  delayPaymentStartType: 1,
+  delayPaymentStartDate: null,
+  contentsCertificatedMailDate: null,
+  existsContract: false,
+  existsReceipt: false,
+  existsEmail: false,
+  existsTranscriptCopy: false,
+  existsScreenShot: false,
 };
 
 export const blankComplaintSalary: ComplaintSalary = {
@@ -182,14 +226,14 @@ export const blankComplaintSalary: ComplaintSalary = {
   paymentDueDay: '',
   closingMonth: '',
   closingDay: '',
-  workEndDate: new Date(),
+  workEndDate: null,
   reference: '',
   existsStatement: false,
   existsCertificate: false,
   existsDelayPayment: false,
   delayPayment: '',
   delayPaymentStartType: 1,
-  delayPaymentStartDate: new Date(),
+  delayPaymentStartDate: null,
 };
 
 export const blankComplaintTradingValue: ComplaintTradingValue = {
@@ -200,7 +244,7 @@ export const blankComplaintTradingValue: ComplaintTradingValue = {
   existsDelayPayment: false,
   delayPayment: '',
   delayPaymentStartType: 1,
-  delayPaymentStartDate: new Date(),
+  delayPaymentStartDate: null,
   business: '',
   reference: '',
   existsContract: false,
@@ -213,9 +257,9 @@ export const blankComplaintSecurityDeposit: ComplaintSecurityDeposit = {
   execute: false,
   existsContract: false,
   existsReceipt: false,
-  contractDate: new Date(),
+  contractDate: null,
   leasePeriod: '',
-  contractEndDate: new Date(),
+  contractEndDate: null,
   agreement: '',
   reference: '',
   existsCertificate: false,
@@ -224,7 +268,7 @@ export const blankComplaintSecurityDeposit: ComplaintSecurityDeposit = {
   existsDelayPayment: false,
   delayPayment: '',
   delayPaymentStartType: 1,
-  delayPaymentStartDate: new Date(),
+  delayPaymentStartDate: null,
 };
 
 export const blankComplaintTrafficAccident: ComplaintTrafficAccident = {
@@ -243,19 +287,20 @@ export const blankComplaintTrafficAccident: ComplaintTrafficAccident = {
   existsDelayPayment: false,
   delayPayment: '',
   delayPaymentStartType: 1,
-  delayPaymentStartDate: new Date(),
+  delayPaymentStartDate: null,
 };
 
 export const blankComplaintLendMoney: ComplaintLendMoney = {
   ...blankContentsCertifiedMailLendMoney,
   execute: false,
   interest: '',
-  interestStartDate: new Date(),
-  interestEndDate: new Date(),
+  interestStartDate: null,
+  interestEndDate: null,
   agreement: '',
   reference: '',
   existsContract: false,
   existsCertificate: false,
   existsAcknowledgement: false,
   existsMemorandum: false,
+  partialReturnDate: null,
 };

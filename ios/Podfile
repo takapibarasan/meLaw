@@ -1,10 +1,13 @@
 platform :ios, '10.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'purin' do
-  # Pods for purin
+# add pods for desired Firebase products
+# https://firebase.google.com/docs/ios/setup#available-pods
+
+target 'meLaw' do
+  # Pods for meLaw
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
+  pod 'FBReactNativeSpec', :path => "../node_modules/react-native/React/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
   pod 'RCTTypeSafety', :path => "../node_modules/react-native/Libraries/TypeSafety"
   pod 'React', :path => '../node_modules/react-native/'
@@ -26,13 +29,16 @@ target 'purin' do
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
   pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
   pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
-  pod 'ReactCommon/callinvoker', :path => "../node_modules/react-native/ReactCommon"
+  pod 'React-callinvoker', :path => "../node_modules/react-native/ReactCommon/callinvoker"
   pod 'ReactCommon/turbomodule/core', :path => "../node_modules/react-native/ReactCommon"
   pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'RCT-Folly', :podspec => '../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec'
+
+  pod 'React-perflogger', :path => '../node_modules/react-native/ReactCommon/reactperflogger'
+  pod 'React-runtimeexecutor', :path => '../node_modules/react-native/ReactCommon/runtimeexecutor'
 
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
@@ -42,18 +48,19 @@ target 'purin' do
   pod 'Firebase/CoreOnly'
   pod 'Firebase/Storage'
   pod 'Firebase/Firestore'
-  pod 'TwitterKit'
+  pod 'TwitterKit5'
   pod 'GoogleSignIn'
+  pod 'AppAuth', '>= 0.94'
 
   pod 'react-native-twitter-signin', :path => '../node_modules/react-native-twitter-signin'
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-google-signin/google-signin'
 
-  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts/Permission-Contacts.podspec"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone/Permission-Microphone.podspec"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications/Permission-Notifications.podspec"
 
-  target 'purinTests' do
+  target 'meLawTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -61,12 +68,20 @@ target 'purin' do
   use_native_modules!
 end
 
-target 'purin-tvOS' do
-  # Pods for purin-tvOS
+target 'meLaw-tvOS' do
+  # Pods for meLaw-tvOS
 
-  target 'purin-tvOSTests' do
+  target 'meLaw-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+  end
 end

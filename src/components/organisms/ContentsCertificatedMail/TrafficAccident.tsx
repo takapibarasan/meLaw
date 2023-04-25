@@ -4,12 +4,67 @@ import { View, TextInput } from 'react-native';
 import Time from '../../molecules/Time';
 import { styles } from '../../../styles/form';
 import DateTemplate from '../../molecules/Date';
-import { ContentsCertifiedMailTrafficAccident } from '../../../models/contents-certified-mail';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 type Props = {
-  model: ContentsCertifiedMailTrafficAccident;
+  accidentDate: firebase.firestore.Timestamp | null;
+  accidentHour: string;
+  accidentMinute: string;
+  accidentLocation: string;
+  vehicleType: string;
+  oppositeVehicleType: string;
+  accidentReason: string;
+  repairCost: string;
+  valuationLoss: string;
+  rentalCost: string;
+  replacementCost: string;
+  registrationExpenses: string;
+  suspensionLoss: string;
+  setAccidentDate: React.Dispatch<
+    React.SetStateAction<firebase.firestore.Timestamp | null>
+  >;
+  setAccidentHour: React.Dispatch<React.SetStateAction<string>>;
+  setAccidentMinute: React.Dispatch<React.SetStateAction<string>>;
+  setAccidentLocation: React.Dispatch<React.SetStateAction<string>>;
+  setVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  setOppositeVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  setAccidentReason: React.Dispatch<React.SetStateAction<string>>;
+  setRepairCost: React.Dispatch<React.SetStateAction<string>>;
+  setValuationLoss: React.Dispatch<React.SetStateAction<string>>;
+  setRentalCost: React.Dispatch<React.SetStateAction<string>>;
+  setReplacementCost: React.Dispatch<React.SetStateAction<string>>;
+  setRegistrationExpenses: React.Dispatch<React.SetStateAction<string>>;
+  setSuspensionLoss: React.Dispatch<React.SetStateAction<string>>;
 };
-const TrafficAccident: FC<Props> = ({ model }) => {
+const TrafficAccident: FC<Props> = ({
+  accidentDate,
+  accidentHour,
+  accidentMinute,
+  accidentLocation,
+  vehicleType,
+  oppositeVehicleType,
+  accidentReason,
+  repairCost,
+  valuationLoss,
+  rentalCost,
+  replacementCost,
+  registrationExpenses,
+  suspensionLoss,
+  setAccidentDate,
+  setAccidentHour,
+  setAccidentMinute,
+  setAccidentLocation,
+  setVehicleType,
+  setOppositeVehicleType,
+  setAccidentReason,
+  setRepairCost,
+  setValuationLoss,
+  setRentalCost,
+  setReplacementCost,
+  setRegistrationExpenses,
+  setSuspensionLoss,
+}) => {
   return (
     <>
       <Text style={styles.description}>
@@ -19,8 +74,13 @@ const TrafficAccident: FC<Props> = ({ model }) => {
         <Text style={styles.label}>交通事故発生日時</Text>
         <Text style={styles.required}>必須</Text>
       </View>
-      <DateTemplate date={model.accidentDate} />
-      <Time />
+      <DateTemplate date={accidentDate} setDate={setAccidentDate} />
+      <Time
+        hour={accidentHour}
+        minute={accidentMinute}
+        setHour={setAccidentHour}
+        setMinute={setAccidentMinute}
+      />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>事故発生場所</Text>
         <Text style={styles.required}>必須</Text>
@@ -28,10 +88,8 @@ const TrafficAccident: FC<Props> = ({ model }) => {
       <TextInput
         style={styles.textInputWide}
         placeholder="◯◯県◯◯市◯◯町◯◯丁目◯番先路上"
-        value={model.accidentLocation}
-        onChangeText={(value) => {
-          model.accidentLocation = value;
-        }}
+        onChangeText={(value) => setAccidentLocation(value)}
+        value={accidentLocation}
       />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>あなた（通告人）の車両の種類</Text>
@@ -39,11 +97,9 @@ const TrafficAccident: FC<Props> = ({ model }) => {
       </View>
       <TextInput
         style={styles.textInput}
-        placeholder="普通常用自動車"
-        value={model.vehicleType}
-        onChangeText={(value) => {
-          model.vehicleType = value;
-        }}
+        placeholder="普通乗用自動車"
+        onChangeText={(value) => setVehicleType(value)}
+        value={vehicleType}
       />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>相手方（被通告人）の車両の種類</Text>
@@ -51,11 +107,9 @@ const TrafficAccident: FC<Props> = ({ model }) => {
       </View>
       <TextInput
         style={styles.textInput}
-        placeholder="普通常用自動車"
-        value={model.oppositeVehicleType}
-        onChangeText={(value) => {
-          model.oppositeVehicleType = value;
-        }}
+        placeholder="普通乗用自動車"
+        onChangeText={(value) => setOppositeVehicleType(value)}
+        value={oppositeVehicleType}
       />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>事故の原因</Text>
@@ -64,24 +118,23 @@ const TrafficAccident: FC<Props> = ({ model }) => {
       <TextInput
         style={styles.textInputWide}
         placeholder="貴殿の不注意、貴殿の脇見運転"
-        value={model.accidentReason}
-        onChangeText={(value) => {
-          model.accidentReason = value;
-        }}
+        onChangeText={(value) => setAccidentReason(value)}
+        value={accidentReason}
       />
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>損害</Text>
         <Text style={styles.required}>必須</Text>
       </View>
+      <Text style={styles.inputDescription}>
+        被害を受けた損害の種類に、請求金額を記載ください。
+      </Text>
       <View style={{ flexDirection: 'row', marginLeft: 20, marginBottom: 20 }}>
         <Text style={styles.subtitle}>修理費</Text>
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.repairCost}
-          onChangeText={(value) => {
-            model.repairCost = value;
-          }}
+          onChangeText={(value) => setRepairCost(value)}
+          value={repairCost}
         />
         <Text style={styles.text}>円</Text>
       </View>
@@ -90,10 +143,8 @@ const TrafficAccident: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.valuationLoss}
-          onChangeText={(value) => {
-            model.valuationLoss = value;
-          }}
+          onChangeText={(value) => setValuationLoss(value)}
+          value={valuationLoss}
         />
         <Text style={styles.text}>円</Text>
       </View>
@@ -102,10 +153,8 @@ const TrafficAccident: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.rentalCost}
-          onChangeText={(value) => {
-            model.rentalCost = value;
-          }}
+          onChangeText={(value) => setRentalCost(value)}
+          value={rentalCost}
         />
         <Text style={styles.text}>円</Text>
       </View>
@@ -114,10 +163,8 @@ const TrafficAccident: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.replacementCost}
-          onChangeText={(value) => {
-            model.replacementCost = value;
-          }}
+          onChangeText={(value) => setReplacementCost(value)}
+          value={replacementCost}
         />
         <Text style={styles.text}>円</Text>
       </View>
@@ -126,10 +173,8 @@ const TrafficAccident: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.registrationExpenses}
-          onChangeText={(value) => {
-            model.registrationExpenses = value;
-          }}
+          onChangeText={(value) => setRegistrationExpenses(value)}
+          value={registrationExpenses}
         />
         <Text style={styles.text}>円</Text>
       </View>
@@ -138,10 +183,8 @@ const TrafficAccident: FC<Props> = ({ model }) => {
         <TextInput
           style={styles.numberInputWide}
           keyboardType="numeric"
-          value={model.suspensionLoss}
-          onChangeText={(value) => {
-            model.suspensionLoss = value;
-          }}
+          onChangeText={(value) => setSuspensionLoss(value)}
+          value={suspensionLoss}
         />
         <Text style={styles.text}>円</Text>
       </View>

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Text, Button } from 'react-native-elements';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Linking } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import {
   snsConfirmData,
@@ -17,24 +17,34 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
     padding: 20,
+    width: '100%',
+  },
+  headerWrapper: {
     alignItems: 'center',
   },
   header: {
-    fontSize: 24,
+    fontWeight: 'bold',
+    fontSize: 22,
     marginTop: 20,
     marginBottom: 30,
+  },
+  link: {
+    fontSize: 16,
+    color: '#1a1b1b',
+    marginTop: -16,
   },
   content: {
     fontSize: 16,
     marginBottom: 20,
   },
   nextButtonWrapper: {
-    width: '30%',
-    marginTop: 20,
+    margin: 20,
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#EB5757',
     height: 45,
+    width: 120,
   },
 });
 
@@ -64,10 +74,27 @@ const PreRequestTemplate: FC<TemplateProps> = ({
   const navigation = useNavigation();
   return (
     <ScrollView contentContainerStyle={styles.wrapper}>
-      <Text style={styles.header}>{confirmData.title}</Text>
-      {confirmData.contents.map((item, i) => (
-        <Text style={styles.content}>{item}</Text>
-      ))}
+      <View style={styles.headerWrapper}>
+        <Text style={styles.header}>{confirmData.title}</Text>
+      </View>
+      {confirmData.contents.map((item, i) => {
+        if (item.indexOf('http') != -1) {
+          return (
+            <Text
+              style={styles.link}
+              onPress={() =>
+                Linking.openURL(item).catch((err) =>
+                  console.error('URLを開けませんでした。', err),
+                )
+              }
+            >
+              {item}
+            </Text>
+          );
+        } else {
+          return <Text style={styles.content}>{item}</Text>;
+        }
+      })}
       <View style={styles.nextButtonWrapper}>
         <Button
           title="次へ"
@@ -110,7 +137,7 @@ const PreRequestScreen: FC<Props> = ({ route }: Props) => {
       {variable == '損害賠償請求' ? (
         <PreRequestTemplate
           confirmData={trafficAccidentConfirmData}
-          screen="損害賠償請求をしましょう"
+          screen="損害賠償（交通事故による物損）請求をしましょう"
           variable={variable}
         />
       ) : (

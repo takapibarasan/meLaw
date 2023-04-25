@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Text } from 'react-native-elements';
 import { TextInput, View } from 'react-native';
 import { RadioButton } from 'react-native-paper';
@@ -10,6 +10,11 @@ type Props = {
   accountType: string;
   account: string;
   accountHolder: string;
+  setBank: React.Dispatch<React.SetStateAction<string>>;
+  setBranch: React.Dispatch<React.SetStateAction<string>>;
+  setAccountType: React.Dispatch<React.SetStateAction<string>>;
+  setAccount: React.Dispatch<React.SetStateAction<string>>;
+  setAccountHolder: React.Dispatch<React.SetStateAction<string>>;
 };
 const Bank: FC<Props> = ({
   bank,
@@ -17,61 +22,69 @@ const Bank: FC<Props> = ({
   accountType,
   account,
   accountHolder,
+  setBank,
+  setBranch,
+  setAccountType,
+  setAccount,
+  setAccountHolder,
 }) => {
   return (
     <>
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.label}>金融機関名</Text>
-        <Text style={[styles.label, { marginLeft: 85 }]}>支店名</Text>
+        <Text style={styles.required}>必須</Text>
+        <Text style={[styles.label, { marginLeft: 50 }]}>支店名</Text>
+        <Text style={styles.required}>必須</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <TextInput
           style={styles.textInputNarrow}
+          onChangeText={(value) => setBank(value)}
           value={bank}
-          onChangeText={(value) => {
-            bank = value;
-          }}
         />
         <TextInput
           style={styles.textInputNarrow}
+          onChangeText={(value) => setBranch(value)}
           value={branch}
-          onChangeText={(value) => {
-            branch = value;
-          }}
         />
       </View>
-      <Text style={styles.label}>口座種別</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>口座種別</Text>
+        <Text style={styles.required}>必須</Text>
+      </View>
       <View style={{ flexDirection: 'row', marginLeft: 20 }}>
         <RadioButton.Item
-          value="first"
+          value="普通預金"
           label="普通預金"
           status={accountType === '普通預金' ? 'checked' : 'unchecked'}
-          onPress={() => (accountType = '普通預金')}
+          onPress={() => setAccountType('普通預金')}
         />
         <RadioButton.Item
-          value="second"
+          value="当座預金"
           label="当座預金"
           status={accountType === '当座預金' ? 'checked' : 'unchecked'}
-          onPress={() => (accountType = '当座預金')}
+          onPress={() => setAccountType('当座預金')}
         />
       </View>
-      <Text style={styles.label}>口座番号</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>口座番号</Text>
+        <Text style={styles.required}>必須</Text>
+      </View>
       <TextInput
         style={styles.textInput}
         maxLength={7}
         keyboardType="numeric"
+        onChangeText={(value) => setAccount(value)}
         value={account}
-        onChangeText={(value) => {
-          account = value;
-        }}
       />
-      <Text style={styles.label}>口座名義人名（カナ）</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.label}>口座名義人名（カナ）</Text>
+        <Text style={styles.required}>必須</Text>
+      </View>
       <TextInput
         style={styles.textInput}
+        onChangeText={(value) => setAccountHolder(value)}
         value={accountHolder}
-        onChangeText={(value) => {
-          accountHolder = value;
-        }}
       />
     </>
   );
