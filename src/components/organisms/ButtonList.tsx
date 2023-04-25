@@ -79,7 +79,6 @@ const ButtonList: FC<Props> = ({ buttons, constant, id, isSubscription }) => {
                 id: id,
               });
             }
-            // }
           }}
           hasTVPreferredFocus
           tvParallaxProperties
